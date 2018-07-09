@@ -1,11 +1,12 @@
 {
-  "name": "vue-video",
+  "name": "vue-video-t",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "vue-cli-service build --modern --target lib --name VueVideo ./src/VueVideo.vue",
+    "lint": "vue-cli-service lint",
+    "prepublish": "npm run build"
   },
   "dependencies": {
     "vue": "^2.5.16"

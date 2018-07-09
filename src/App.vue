@@ -1,17 +1,29 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Video class="video" controls v-bind.sync="videoParams">
+      <source src="/1.mp4"/>
+    </Video>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
+import Video from './Video'
 export default {
   name: 'app',
+  data () {
+    return {
+      videoParams: {
+        volume: null,
+        currentTime: null,
+        playbackRate: null,
+        pause: false,
+        playing: false
+      }
+    }
+  },
   components: {
-    HelloWorld
+    Video
   }
 }
 </script>
@@ -25,4 +37,8 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+  .video {
+    width: 640px;
+    height: 480px;
+  }
 </style>
