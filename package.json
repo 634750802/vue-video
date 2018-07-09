@@ -1,10 +1,11 @@
 {
-  "name": "vue-video-t",
+  "name": "vue-video-component",
   "version": "0.1.0",
+  "repository": "https://github.com/634750802/vue-video",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --modern --target lib --name VueVideo ./src/VueVideo.vue",
+    "build": "vue-cli-service build --modern --target lib --name Video ./src/VueVideo.vue",
     "lint": "vue-cli-service lint",
     "prepublish": "npm run build"
   },
