@@ -209,7 +209,7 @@ export default {
         return findExtension(this.type)
       } else {
         if (this.src) {
-          const ext = /\.([^.]+)(?:[#?]|$)/.exec(this.src)
+          const ext = /\.([^.#?]+)(?:[#?]|$)/.exec(this.src)
           if (ext) {
             return findExtension(ext[1])
           }

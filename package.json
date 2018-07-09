@@ -1,6 +1,6 @@
 {
   "name": "vue-video-component",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "repository": "https://github.com/634750802/vue-video",
   "main": "dist/Video.common.js",
   "scripts": {
