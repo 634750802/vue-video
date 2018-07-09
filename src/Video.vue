@@ -174,7 +174,7 @@ export default {
       // console.warn('自动播放在某系浏览器下不可用')
     }
   },
-  beforeMount () {
+  mounted () {
     const ext = this.getExtension()
     if (ext) {
       this.callExtensionHook(ext, 'create', this.src)
