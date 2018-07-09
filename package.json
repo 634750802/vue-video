@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --modern --target lib --name Video ./src/VueVideo.vue",
+    "build": "vue-cli-service build --modern --target lib --name Video ./src/Video.vue",
     "lint": "vue-cli-service lint",
     "prepublish": "npm run build"
   },
