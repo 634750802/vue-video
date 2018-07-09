@@ -1,7 +1,7 @@
 <template>
   <div class="vue-video">
     <video ref="video"
-           :src="sourceType === 'source' ? src : undefined"
+           :src="sourceType === 'source' ? videoSrc : undefined"
            :controls="!customizeControls && controls"
            :autoplay="autoplay"
            @abort="onAbort"
@@ -75,6 +75,23 @@
 
 <script>
 
+const extensions = []
+
+function findExtension (name) {
+  for (const extension of extensions) {
+    if (extension.type instanceof RegExp) {
+      if (extension.type.test(name)) {
+        return extension
+      } else {
+        continue
+      }
+    }
+    if (extension.type === name) {
+      return extension
+    }
+  }
+}
+
 export default {
   name: 'Video',
   props: {
@@ -90,10 +107,12 @@ export default {
     customizeMask: Boolean,
     controls: Boolean,
     autoplay: Boolean,
-    isLive: Boolean
+    isLive: Boolean,
+    type: String
   },
   data () {
     return {
+      videoSrc: this.src,
       duration: -1,
       seeking: false,
       playing: false,
@@ -105,9 +124,9 @@ export default {
   },
   computed: {
     sourceType () {
-      if (Array.isArray(this.src)) {
+      if (Array.isArray(this.videoSrc)) {
         return 'source-list'
-      } else if (typeof this.src === 'string') {
+      } else if (typeof this.videoSrc === 'string') {
         return 'source'
       } else {
         return 'unknown'
@@ -155,6 +174,14 @@ export default {
       // console.warn('自动播放在某系浏览器下不可用')
     }
   },
+  beforeMount () {
+    const ext = this.getExtension()
+    if (ext) {
+      this.callExtensionHook(ext, 'create', this.src)
+    } else {
+      this.videoSrc = this.src
+    }
+  },
   methods: {
     setOrUpdateParam (paramName, propName) {
       propName = propName || paramName
@@ -176,6 +203,21 @@ export default {
         return
       }
       this.video[paramName] = value
+    },
+    getExtension () {
+      if (this.type) {
+        return findExtension(this.type)
+      } else {
+        if (this.src) {
+          const ext = /\.([^.]+)(?:[#?]|$)/.exec(this.src)
+          if (ext) {
+            return findExtension(ext[1])
+          }
+        }
+      }
+    },
+    callExtensionHook (ext, hook, src) {
+      if (typeof ext[hook] === 'function') ext[hook](this, src)
     },
     onAbort () {
       this.$emit('abort')
@@ -279,9 +321,27 @@ export default {
       } else {
         this.video.play()
       }
+    },
+    src (nv) {
+      const ext = this.getExtension()
+      if (ext) {
+        this.callExtensionHook(ext, 'update', nv)
+      } else {
+        this.videoSrc = nv
+      }
     }
+  },
+  beforeDestroy () {
+    const ext = this.getExtension()
+    if (ext) {
+      this.callExtensionHook(ext, 'destroy')
+    }
+  },
+  $use (ext, {create, update, destroy}) {
+    extensions.push({type: ext, create, update, destroy})
   }
 }
+
 </script>
 
 <style lang="less">

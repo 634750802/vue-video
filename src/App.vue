@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <Video class="video" controls v-bind.sync="videoParams">
-      <source src="/1.mp4"/>
+    <Video class="video" controls v-bind.sync="videoParams" src="/1.mp4">
     </Video>
   </div>
 </template>
@@ -9,6 +8,13 @@
 <script>
 
 import Video from './Video'
+
+Video.$use('mp4', {
+  create (video, src) {
+    console.log('create', video, src)
+  }
+})
+
 export default {
   name: 'app',
   data () {
